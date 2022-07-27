@@ -1,6 +1,6 @@
 import pytest
 from lib.common import wait_for, vm_image
-from tests.storage import vdi_is_open
+from tests.storage import run_quicktest_on_sr, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host >= 8.0 with an additional unused disk for the SR
@@ -17,6 +17,9 @@ class TestNFSSRCreateDestroy:
 
 @pytest.mark.usefixtures("nfs_sr")
 class TestNFSSR:
+    def test_quicktest(self, nfs_sr):
+        run_quicktest_on_sr(nfs_sr)
+
     def test_vdi_is_not_open(self, vdi_on_nfs_sr):
         assert not vdi_is_open(vdi_on_nfs_sr)
 

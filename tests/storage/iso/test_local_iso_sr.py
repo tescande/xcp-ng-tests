@@ -1,8 +1,10 @@
 import pytest
 import logging
 import os
+
 from .conftest import create_local_iso_sr, copy_tools_iso_to_iso_sr, \
     check_iso_mount_and_read_from_vm, remove_iso_from_sr
+from tests.storage import run_quicktest_on_sr
 
 # Requirements:
 # From --hosts parameter:
@@ -41,6 +43,9 @@ class TestLocalISOSRCreateDestroy:
 @pytest.mark.small_vm
 @pytest.mark.usefixtures("local_iso_sr")
 class TestLocalISOSR:
+    def test_quicktest(self, local_iso_sr):
+        sr, location = local_iso_sr
+        run_quicktest_on_sr(sr)
 
     def test_iso_mount_and_read(self, host, local_iso_sr, unix_vm):
         sr, location = local_iso_sr

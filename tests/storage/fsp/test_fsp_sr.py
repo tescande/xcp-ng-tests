@@ -3,6 +3,7 @@ import os
 import logging
 
 from .conftest import DIRECTORIES_PATH
+from tests.storage import run_quicktest_on_sr
 
 # Requirements:
 # From --hosts parameter:

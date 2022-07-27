@@ -5,7 +5,7 @@ import time
 from .conftest import STORAGE_POOL_NAME, LINSTOR_PACKAGE
 from lib.commands import SSHCommandFailed
 from lib.common import wait_for, vm_image
-from tests.storage import vdi_is_open
+from tests.storage import run_quicktest_on_sr, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host >= 8.2 with an additional unused disk for the SR
@@ -52,6 +52,9 @@ class TestLinstorSRCreateDestroy:
 
 @pytest.mark.usefixtures("linstor_sr")
 class TestLinstorSR:
+    def test_quicktest(self, linstor_sr):
+        run_quicktest_on_sr(linstor_sr)
+
     def test_vdi_is_not_open(self, vdi_on_linstor_sr):
         assert not vdi_is_open(vdi_on_linstor_sr)
 

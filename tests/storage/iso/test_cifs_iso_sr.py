@@ -1,7 +1,9 @@
 import pytest
 import logging
 import os
+
 from .conftest import copy_tools_iso_to_iso_sr, check_iso_mount_and_read_from_vm, remove_iso_from_sr
+from tests.storage import run_quicktest_on_sr
 
 # Requirements:
 # From --hosts parameter:
@@ -35,6 +37,8 @@ class TestCIFSISOSRCreateDestroy:
 @pytest.mark.small_vm
 @pytest.mark.usefixtures("cifs_iso_sr")
 class TestCIFSISOSR:
+    def test_quicktest(self, cifs_iso_sr):
+        run_quicktest_on_sr(cifs_iso_sr)
 
     def test_iso_mount_and_read(self, host, cifs_iso_sr, running_unix_vm):
         # create the ISO SR on CIFS

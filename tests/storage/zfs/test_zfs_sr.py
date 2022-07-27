@@ -5,7 +5,7 @@ import pytest
 from .conftest import VOLUME_PATH, VOLUME_NAME
 from lib.commands import SSHCommandFailed
 from lib.common import wait_for, vm_image
-from tests.storage import vdi_is_open
+from tests.storage import run_quicktest_on_sr, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host >= 8.2 with an additional unused disk for the SR
@@ -44,6 +44,9 @@ class TestZFSSRCreateDestroy:
 
 @pytest.mark.usefixtures("zpool_vol0")
 class TestZFSSR:
+    def test_quicktest(self, zfs_sr):
+        run_quicktest_on_sr(zfs_sr)
+
     def test_vdi_is_not_open(self, vdi_on_zfs_sr):
         assert not vdi_is_open(vdi_on_zfs_sr)
 

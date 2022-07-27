@@ -4,7 +4,7 @@ import pytest
 
 from lib.commands import SSHCommandFailed
 from lib.common import wait_for, vm_image
-from tests.storage import vdi_is_open
+from tests.storage import run_quicktest_on_sr, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host >= 8.2
@@ -43,6 +43,9 @@ class TestMooseFSSRCreateDestroy:
 
 @pytest.mark.usefixtures("moosefs_sr")
 class TestMooseFSSR:
+    def test_quicktest(self, moosefs_sr):
+        run_quicktest_on_sr(moosefs_sr)
+
     def test_vdi_is_not_open(self, vdi_on_moosefs_sr):
         assert not vdi_is_open(vdi_on_moosefs_sr)
 

@@ -1,6 +1,6 @@
 import pytest
 from lib.common import wait_for, vm_image
-from tests.storage import try_to_create_sr_with_missing_device, vdi_is_open
+from tests.storage import run_quicktest_on_sr, try_to_create_sr_with_missing_device, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host with an additional unused disk for the SR
@@ -26,6 +26,9 @@ class TestLVMSRCreateDestroy:
 
 @pytest.mark.usefixtures("lvm_sr")
 class TestLVMSR:
+    def test_quicktest(self, lvm_sr):
+        run_quicktest_on_sr(lvm_sr)
+
     def test_vdi_is_not_open(self, vdi_on_lvm_sr):
         assert not vdi_is_open(vdi_on_lvm_sr)
 

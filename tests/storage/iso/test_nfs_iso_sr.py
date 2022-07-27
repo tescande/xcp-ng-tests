@@ -1,7 +1,9 @@
 import pytest
 import os
 import logging
+
 from .conftest import copy_tools_iso_to_iso_sr, check_iso_mount_and_read_from_vm, remove_iso_from_sr
+from tests.storage import run_quicktest_on_sr
 
 # Requirements:
 # From --hosts parameter:
@@ -37,6 +39,8 @@ class TestNFSISOSRCreateDestroy:
 @pytest.mark.small_vm
 @pytest.mark.usefixtures("nfs_iso_sr")
 class TestNFSISOSR:
+    def test_quicktest(self, nfs_iso_sr):
+        run_quicktest_on_sr(nfs_iso_sr)
 
     def test_iso_mount_and_read(self, host, nfs_iso_sr, running_unix_vm):
         # create the ISO SR on NFS

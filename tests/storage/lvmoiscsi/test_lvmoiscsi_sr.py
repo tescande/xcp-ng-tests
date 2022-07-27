@@ -1,6 +1,6 @@
 import pytest
 from lib.common import wait_for, vm_image
-from tests.storage import vdi_is_open
+from tests.storage import run_quicktest_on_sr, vdi_is_open
 
 # Requirements:
 # - one XCP-ng host >= 8.2
@@ -24,6 +24,9 @@ class TestLVMOISCSISRCreateDestroy:
 
 @pytest.mark.usefixtures("lvmoiscsi_sr")
 class TestLVMOISCSISR:
+    def test_quicktest(self, lvmoiscsi_sr):
+        run_quicktest_on_sr(lvmoiscsi_sr)
+
     def test_vdi_is_not_open(self, vdi_on_lvmoiscsi_sr):
         assert not vdi_is_open(vdi_on_lvmoiscsi_sr)
 
