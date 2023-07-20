@@ -72,11 +72,4 @@ print(sr_ref)
     }))
 
 def run_quicktest_on_sr(sr):
-    old_sr_uuid = sr.pool.get_default_sr()
-    if sr.uuid != old_sr_uuid:
-        sr.pool.set_default_sr(sr.uuid)
-    try:
-        sr.pool.master.ssh(['/opt/xensource/debug/quicktest', '-default-sr'])
-    finally:
-        if sr.uuid != old_sr_uuid:
-            sr.pool.set_default_sr(old_sr_uuid)
+    sr.pool.master.ssh(['/opt/xensource/debug/quicktest', '-sr', sr.uuid])
