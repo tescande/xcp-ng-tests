@@ -4,7 +4,9 @@ import argparse
 import atexit
 import logging
 import os
+import random
 import requests
+import string
 import subprocess
 import sys
 import tempfile
@@ -47,11 +49,13 @@ def generate_answerfile(directory, installer, hostname_or_ip, action, hdd):
     cmd = ['openssl', 'passwd', '-6', password]
     res = subprocess.run(cmd, stdout=subprocess.PIPE)
     encrypted_password = res.stdout.decode().strip()
+    hostname = "xcp-ng-" + "".join(random.choice(string.ascii_lowercase) for i in range(5))
     with open(f'{directory}/answerfile.xml', 'w') as answerfile:
         if action == 'install':
             answerfile.write(f"""<?xml version="1.0"?>
 <installation>
     <keymap>fr</keymap>
+    <hostname>{hostname}</hostname>
     <primary-disk>{hdd}</primary-disk>
     <guest-disk>{hdd}</guest-disk>
     <root-password type="hash">{encrypted_password}</root-password>
